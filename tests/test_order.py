@@ -1,11 +1,12 @@
 import pytest
 import allure
+from pages.base_page import BasePage
 from pages.main_page import MainPage
 from pages.order_page import OrderPage
 from pages.success_page import SuccessPage
 from data import order_data
 from urls import BASE_URL, DZEN_URL
-from helpers import wait_url
+
 
 class TestOrder:
     @allure.title("Проверка процесса заказа самоката")
@@ -51,7 +52,8 @@ class TestOrder:
         with allure.step("Переключение на новое окно"):
             driver.switch_to.window(driver.window_handles[1])
         with allure.step("Ожидание полной загрузки страницы и изменения URL"):
-            wait_url(driver, DZEN_URL)
+            base_page = BasePage(driver)
+            base_page.wait_url(DZEN_URL)
         with allure.step("Проверка URL Дзена"):
             assert DZEN_URL in driver.current_url, "Нет редиректа на страницу Дзена"
         driver.close()
